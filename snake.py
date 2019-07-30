@@ -77,7 +77,7 @@ turtle.register_shape("trash.gif")
 food = turtle.clone()
 food.shape("trash.gif")
 
-food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
+food_pos = []
 food_stamps = []
 
 for this_food_pos in food_pos :
@@ -98,8 +98,8 @@ def make_food():
     food.goto(food_x, food_y)
     food_ran_pos = (food_x, food_y)
     food_pos.append(food_ran_pos)
-    food.stamp()
-    food_stamps.append(food_ran_pos)
+    random_stamp = food.stamp()
+    food_stamps.append(random_stamp)
 
 #ejfvhoihfeoividfghjkgdsasdfhjkdsasdfhjkjgfdsasdgjkjgfdsasdgjklkgfdsasdfhjkjgfsasdg
     
@@ -109,6 +109,12 @@ def move_snake():
     x_pos = my_pos [0]
     y_pos = my_pos [1]
 
+    for i in range(len (pos_list)):
+        for j in range(len (pos_list)):
+            if pos_list [i] == pos_list [j] and i !=j:
+               print ("You ate your self!")
+               quit()
+
     if snake.direction == "Up":
         snake.goto(x_pos, y_pos + square_size)
     elif snake.direction == "Down":
@@ -117,22 +123,30 @@ def move_snake():
         snake.goto(x_pos + square_size, y_pos)
     elif snake.direction == "Left":
         snake.goto(x_pos - square_size, y_pos)
-        
+    
     new_stamp()
-
     if snake.pos() in food_pos:
         food_index = food_pos.index(snake.pos())
         food.clearstamp(food_stamps [food_index])
+        #food.clearstamps()
         food_pos.pop(food_index)
         food_stamps.pop(food_index)
         print("You have eaten the food!")
 
-    if len(food_stamps) <= 6 :
+    
+
+        #x_pos+=square_size
+
+
+        #new_stamp()
+
+    else:
+        remove_tail()
+
+    if len(food_stamps) <= 1 :
         make_food() 
 
-        
 
-    remove_tail()
 
     new_pos = snake.pos()
     new_x_pos = new_pos[0]
@@ -154,8 +168,18 @@ def move_snake():
         print("Game Over!")
         quit()
 
-    
 
+
+    
+##    if new_pos in pos_list:
+##        print(pos_list)
+##        print(new_pos)
+##        print(food_pos)
+##        quit()
+
+
+
+    
     turtle.ontimer(move_snake, time_step)
 
     
